@@ -23,7 +23,12 @@ Features:
 # Explicacion
 
       Al ejecutar el server.py, solamente veremos la reverse shell, lo demas se esta guardando 
-      en el escritorio. Si queremos 
+      en el escritorio. Si queremos podemos ejecutar individualmente los archivos de dentro 
+      de la carpeta server, esto hara que veamos los keystrokes que se van capturando en tiempo 
+      real.
+
+      Para el apartado del servidor podemos ejecutarlo en linux/windows.
+      Para compilar necesitaremos el uso de un windows... 
 
 ---
 
