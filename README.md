@@ -28,7 +28,7 @@ Features:
       real.
 
       Para el apartado del servidor podemos ejecutarlo en linux/windows.
-      Para compilar necesitaremos el uso de un windows... 
+      Para compilar necesitaremos el uso de un windows...
 
 ---
 
@@ -40,7 +40,7 @@ Dependecias
             
             2. Tambien requerimos de netcat (no nc)
                   ║       
-                  ╚═► Linux:   sudo apt-get install -y netcat
+                  ╚═► Linux:   sudo apt-get install -y ncat
                   ║       
                   ╚═► Windows:  https://nmap.org/dist/nmap-7.94-setup.exe 
                                     (Aseguraos de instalar netcat)
@@ -65,37 +65,54 @@ Files:
 ### Certificados: 
 Recurso ---> https://cyberchef.org/
 
-      Ejecutamos el create_certs.py, nos dará de resultado 2 archivos
+---
+
+         
+      1. Ejecutamos el create_certs.py, nos dará de resultado 2 archivos
          key.pem y cert.pem
 
-      Estos archivos los encodeamos en base64 y los pegamos en los archivos 
-      certs.py (client/server)   
+      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+      └─$ python3 create_certs.py
 
-      Funcion crte == cert.pem
-      Funcion locker == key.pem
+      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+      └─$ ls
+      client  create_certs.py  img  __pycache__  README.md  requirements.txt  server
+---
+     2. Estos archivos los encodeamos en base64  
+        certs.py (client/server)   
+
+      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+      └─$ sudo apt install xclip && cat key.pem | base64 | xclip -sel clip
+
+      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+      └─$ cat cert.pem | base64 | xclip -sel clip
+
+
+---
+      3. Los pegamos en los archivos
+         Funcion crte == cert.pem
+         Funcion locker == key.pem
 
    ![img_1.png](img/img_1.png)
 
 
 ### 1. Preparar IP
 
-      Una vez hecho esto correctamente....
-   
       Nos dirigimos a la carpeta client y debemos especificar la direccion IP
-      para que nos lleguen las conexiones.
 
       En los archivos "find_interest.py", "get_points.py" y keylog_command.py" tenemos una
       función llamada "know_gme()"
          
       En esta funcion debemos especificar la direccion IP. Ahora tenemos dos opciones:
-   #### i. Encritpar IP:
+    
+         i. Encritpar IP:
          
-         Ejecutamos el archivo "client/CryptoPhenix" nos pedira una IP.
+            Ejecutamos el archivo "client/CryptoPhenix" nos pedira una IP.
          
-         La parte que nos interesa es la de RESULT, que es la IP encriptada + la clave para desencriptar
+            La parte que nos interesa es la de RESULT, que es la IP encriptada + la clave para desencriptar
    ![img_3.png](img/img_3.png)
             
-   #### ii. IP sin encriptar
+    ii. IP sin encriptar
 
             Simplemente escribimos la IP como veremos en el siguiente punto
    
@@ -122,20 +139,21 @@ Recurso ---> https://cyberchef.org/
       Si ejecutamos el archivo principal client/keylog_command.py deberiamos de recibir todas las 
       conexiones!
 
-      En el caso de que no nos funcione, tenemos que generar unos certificados nuevos para el cliente y servidor!
+      En el caso de que no nos funcione, tenemos que generar unos certificados nuevos 
 
 # Compilación
 
-      Para esto necesitaremos de un Windows SI O SI, ya que utilizamos una libreria llamada win32crypt
-      solo disponible para Windows...
+      Para esto necesitaremos de un Windows SI O SI, ya que utilizamos una libreria
+      llamada win32crypt solo disponible para Windows...
 
       Para Generar el .exe ejecutaremos el siguente comando en la carpte "Client":
 ---
-      C:\WINDOWS\system32> pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=minericon.ico keylog_commamnd.py
+      D:\FakeProyect\server> pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=minericon.ico keylog_commamnd.py
 ---
 # Proximamente!
 
 #### Preparacion Automática:
+#### Diferentes plantillas
 
-      Ejecutar archivo "prepare.py"
+
 
