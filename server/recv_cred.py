@@ -62,40 +62,42 @@ def recv_output(secure_conn):
 
 
 def main():
-    host = '0.0.0.0'
-    port = 5002
+    try:
+        host = '0.0.0.0'
+        port = 5002
 
-    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    context.check_hostname = None
+        context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        context.check_hostname = None
 
-    # Creamos un archivo con el certificado
-    cert = tempfile.NamedTemporaryFile(delete=False)
-    cert.write(certs.get_crte().encode())
-    cert.close()
+        # Creamos un archivo con el certificado
+        cert = tempfile.NamedTemporaryFile(delete=False)
+        cert.write(certs.get_crte().encode())
+        cert.close()
 
-    key = tempfile.NamedTemporaryFile(delete=False)
-    key.write(certs.get_locker().encode())
-    key.close()
+        key = tempfile.NamedTemporaryFile(delete=False)
+        key.write(certs.get_locker().encode())
+        key.close()
 
-    # Add the certificate and private key to the context.
-    context.load_cert_chain(certfile=cert.name, keyfile=key.name)
+        # Add the certificate and private key to the context.
+        context.load_cert_chain(certfile=cert.name, keyfile=key.name)
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind((host, port))
-    sock.listen(1)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind((host, port))
+        sock.listen(1)
 
-    print(Fore.YELLOW + "|[!] Listening on 5002|")
+        print(Fore.YELLOW + "|[!] Listening on 5002|")
 
-    conn, addr = sock.accept()
-    secure_conn = context.wrap_socket(conn, server_side=True)
+        conn, addr = sock.accept()
+        secure_conn = context.wrap_socket(conn, server_side=True)
 
-    print(Fore.YELLOW + f"\n[!] Connection on port 5002...\t{addr}")
+        print(Fore.YELLOW + f"\n[!] Connection on port 5002...\t{addr}")
 
-    thread_1 = threading.Thread(target=init_recv(secure_conn))
-    thread_1.start()
+        thread_1 = threading.Thread(target=init_recv(secure_conn))
+        thread_1.start()
 
-    thread_1.join()
-
+        thread_1.join()
+    except KeyboardInterrupt:
+        exit()
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,3 @@
-
 import subprocess
 import threading
 import warnings
@@ -80,4 +79,7 @@ def all_right():
 
 
 if __name__ == "__main__":
-    all_right()
+    try:
+        all_right()
+    except Exception:
+        pass

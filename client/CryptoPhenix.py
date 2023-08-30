@@ -160,9 +160,18 @@ def file_to_moddify():
 
 
 if __name__ == "__main__":
-    while True:
-        try:
-            functions()
-        except KeyboardInterrupt:
-            print(Fore.RED + "\n[!] EXITING PROGRAM...")
-            exit()
+    try:
+        ip = input("Enter IP >> ")
+
+        with open("test.txt", "w") as test:
+            test.write(ip)
+
+        init_crypt_file("test.txt")
+
+        with open("test.txt", "rb") as f:
+            content = f.read()
+        print("\nRESULT --> ", content)
+        encrypted_file_data = decrypt(content)
+    except KeyboardInterrupt:
+        print(Fore.RED + "\n[!] EXITING PROGRAM...")
+        exit()

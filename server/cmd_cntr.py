@@ -104,19 +104,21 @@ def snd_nc():
 
 def recv_nc():
     encodings = ["utf-8", "latin-1", "ascii"]  # Lista de codificaciones a probar
-    for line in ncat.stdout:
-        for encoding in encodings:
-            try:
-                decoded_line = line.rstrip().decode(encoding)
+    try:
+        for line in ncat.stdout:
+            for encoding in encodings:
+                try:
+                    decoded_line = line.rstrip().decode(encoding)
+                    print(decoded_line)
+                    break
+                except UnicodeDecodeError:
+                    continue
+            else:
+                # Si ninguna codificación funciona, utilizar una codificación por defecto o ignorar el error
+                decoded_line = line.rstrip().decode(errors="ignore")
                 print(decoded_line)
-                break
-            except UnicodeDecodeError:
-                continue
-        else:
-            # Si ninguna codificación funciona, utilizar una codificación por defecto o ignorar el error
-            decoded_line = line.rstrip().decode(errors="ignore")
-            print(decoded_line)
-
+    except ValueError:
+        pass
 
 def main():
     try:

