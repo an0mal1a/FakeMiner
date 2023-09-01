@@ -7,9 +7,15 @@ import colorama
 from colorama import Fore
 import certs
 
-# escribir en archivo
-colorama.init()
+#
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+#
 
+
+colorama.init()
 
 def get_user_path():
     return "{}/".format(Path.home())

