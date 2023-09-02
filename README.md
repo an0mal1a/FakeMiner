@@ -20,7 +20,7 @@ Features:
                3. Contraseñas en navegadores (edge/brave/google) (conex. cifrada) :5002
                4. Contraseñas wifi guardadas (conex. cifrada) :5002
 
-         Testeado con windows defender y malwarebytes, no da positivo!   
+         Testeado con windows defender y malwarebytes, no da positivo! (02/09/2023)  
 --- 
 # Explicaciones
         
