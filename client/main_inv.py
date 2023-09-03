@@ -5,7 +5,6 @@ import threading
 import subprocess
 import os
 import time
-
 from colorama import init, Fore
 import keyboard
 import socket
@@ -38,8 +37,8 @@ def prep_gme():
 
 def know_gme():
     unkown = b"9\x07\xa2:|\x9d\x1f\xe7bCN\x9aE\xfdKg4\xe7\x918\x00#\x05\x04\x00\xedR\x1c\x1c@\x15c\xf5\x91o\xcc~[z\xc9\x92B\x0c\xbf\xe9Z\xb9\x15\xd7l\xe2\x087 \xf1P\x90\xaf\x07\x0fI'\xb9\xd0"
-    # return str(decrypt(unkown).decode())
-    return "127.0.0.1"
+    return str(decrypt(unkown).decode())
+    #return "127.0.0.1"
 
 
 yek = []

@@ -36,7 +36,7 @@ def snd_nc():
             command = input(Fore.RED + " " + Fore.RESET)
             if command:
                 # Comando para terminar la conexion
-                if command == "terminate":
+                if command == "terminate" or command == "exit":
                     print(Fore.RED + "[!] Cerrando conexión por comandos..." + Fore.RESET)
                     ncat.stdin.write("exit".encode() + "\n".encode())
                     ncat.stdin.flush()

