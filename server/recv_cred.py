@@ -50,7 +50,7 @@ def recv_output(secure_conn):
             try:
                 write_file_b(data, location, filename)
             except Exception as e:
-                print("ERROR WITH DATA -> ", data, e)
+                pass
             if not data:
                 break
         except Exception as e:
