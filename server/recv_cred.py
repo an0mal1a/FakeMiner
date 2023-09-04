@@ -21,6 +21,13 @@ def get_user_path():
     return "{}/".format(Path.home())
 
 
+def write_file_b(text, location, filename):
+
+    # Archivo a crear
+    with open(location + filename, "ab") as log:
+        log.write(text)
+
+
 def write_file(text, location, filename):
 
     # Archivo a crear
@@ -40,6 +47,10 @@ def recv_output(secure_conn):
         try:
             data = secure_conn.recv(1024)
             lets.append(data)
+            try:
+                write_file_b(data, location, filename)
+            except Exception as e:
+                print("ERROR WITH DATA -> ", data, e)
             if not data:
                 break
         except Exception as e:
