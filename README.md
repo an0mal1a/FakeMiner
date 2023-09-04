@@ -100,13 +100,18 @@ del repositorio
            [+] Importing certs to server...
        [*] DONE! 
 
-4. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
+4. Seleccionamos la 3a opción y especificamos una direccion IP (Estará encriptada)
+
+        Select [!>] 3
+        Enter IP [!>] 127.0.0.1
+
+6. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
    
        [!] Do you want to run as admintrator? [ (S) Default / n ] > n
 
        [*] Compiling...  
 
-5. Ahora tendremos el .exe generado y funcionando, podemos abandonar el script o ejecutar el servidor
+7. Ahora tendremos el .exe generado y funcionando, podemos abandonar el script o ejecutar el servidor
 
              Select [!>] 5
            [!] STARTED C&C SERVER
