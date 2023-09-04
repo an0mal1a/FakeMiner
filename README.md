@@ -106,7 +106,8 @@ del repositorio
         Enter IP [!>] 127.0.0.1
 
 6. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
-   
+(Espearar a que pyinstaller acabe el proceso....)   
+
        [!] Do you want to run as admintrator? [ (S) Default / n ] > n
 
        [*] Compiling...  
