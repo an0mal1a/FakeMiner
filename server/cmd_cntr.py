@@ -37,14 +37,14 @@ def snd_nc():
             if command:
                 # Comando para terminar la conexion
                 if command == "terminate" or command == "exit":
-                    print(Fore.RED + "[!] Cerrando conexión por comandos..." + Fore.RESET)
+                    print(Fore.RED + "\n[!] Cerrando conexión por comandos...\n" + Fore.RESET)
                     ncat.stdin.write("exit".encode() + "\n".encode())
                     ncat.stdin.flush()
                     ncat.communicate()
 
                     # Si se ha ejecutado server.py, avisar que sigue en escucha
                     if __name__ != "__main__":
-                        print(Fore.YELLOW + "\t[*] Escuchando keystrokes..." + Fore.RESET)
+                        print(Fore.YELLOW + "\n\t[*] Escuchando keystrokes..." + Fore.RESET)
 
                     break
 
@@ -78,6 +78,7 @@ def recv_nc():
                 # Si ninguna codificación funciona, utilizar una codificación por defecto o ignorar el error
                 decoded_line = line.rstrip().decode(errors="ignore")
                 print(decoded_line)
+
     except ValueError:
         pass
 

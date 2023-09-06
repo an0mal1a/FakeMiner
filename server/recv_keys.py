@@ -50,7 +50,7 @@ def connec(cert, key):
     socks = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socks.bind(('0.0.0.0', 5000))
     socks.listen(1)
-    print(Fore.CYAN + "|[!] Listening on 5000|")
+    print(Fore.CYAN + "|[!] Listening on 5000|" + Fore.RESET)
 
     # Aceptamos conexiones entrantes...
     conn, addr = socks.accept()

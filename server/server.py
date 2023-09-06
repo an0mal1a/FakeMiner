@@ -44,8 +44,8 @@ def main():
     thread_3.start()
 
     # Juntamos los hilos para su posterior detención.
-    thread_2.join()
     thread_1.join()
+    thread_2.join()
     thread_3.join()
 
 

