@@ -82,7 +82,7 @@ def encrypt(content, key):
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
     ciphertext = encryptor.update(message) + encryptor.finalize()
-    return key + iv + ciphertext
+    return iv + ciphertext
 
 
 def pad(message):

